@@ -17,9 +17,9 @@ deb-src http://archive.ubuntu.com/ubuntu saucy-updates multiverse
 deb http://archive.ubuntu.com/ubuntu saucy-backports main restricted universe multiverse
 deb-src http://archive.ubuntu.com/ubuntu saucy-backports main restricted universe multiverse
 
-deb http://archive.ubuntu.com/ubuntu saucy-security main restricted
-deb-src http://archive.ubuntu.com/ubuntu saucy-security main restricted
-deb http://archive.ubuntu.com/ubuntu saucy-security universe
-deb-src http://archive.ubuntu.com/ubuntu saucy-security universe
-deb http://archive.ubuntu.com/ubuntu saucy-security multiverse
-deb-src http://archive.ubuntu.com/ubuntu saucy-security multiverse
+deb http://security.ubuntu.com/ubuntu saucy-security main restricted
+deb-src http://security.ubuntu.com/ubuntu saucy-security main restricted
+deb http://security.ubuntu.com/ubuntu saucy-security universe
+deb-src http://security.ubuntu.com/ubuntu saucy-security universe
+deb http://security.ubuntu.com/ubuntu saucy-security multiverse
+deb-src http://security.ubuntu.com/ubuntu saucy-security multiverse

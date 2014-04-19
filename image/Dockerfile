@@ -1,4 +1,4 @@
-FROM ubuntu:13.10
+FROM quay.io/loysoft/ubuntu:14.04
 MAINTAINER Phusion <info@phusion.nl>
 
 ENV HOME /root

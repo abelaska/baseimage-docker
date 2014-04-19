@@ -13,7 +13,8 @@ function fail()
 }
 
 echo "Checking whether all services are running..."
-services=`sv status /etc/service/*`
+#services=`sv status /etc/service/*`
+services=`sv status /etc/service/cron`
 status=$?
 if [[ "$status" != 0 || "$services" = "" || "$services" =~ down ]]; then
 	fail

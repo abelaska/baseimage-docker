@@ -3,6 +3,9 @@ set -e
 source /build/buildconfig
 set -x
 
+## Install python3
+$minimal_apt_get_install python3
+
 ## Install init process.
 cp /build/my_init /sbin/
 mkdir -p /etc/my_init.d /etc/container_environment
@@ -18,7 +21,7 @@ $minimal_apt_get_install runit
 $minimal_apt_get_install syslog-ng-core
 mkdir -p /etc/service/syslog-ng
 cp /build/runit/syslog-ng /etc/service/syslog-ng/run
-mkdir -p -p /var/lib/syslog-ng
+mkdir -p /var/lib/syslog-ng
 cp /build/config/syslog_ng_default /etc/default/syslog-ng
 
 ## Install logrotate.

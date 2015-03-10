@@ -4,7 +4,9 @@ source /build/buildconfig
 set -x
 
 ## Temporarily disable dpkg fsync to make building faster.
-echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup
+if [[ ! -e /etc/dpkg/dpkg.cfg.d/docker-apt-speedup ]]; then
+	echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/docker-apt-speedup
+fi
 
 ## Prevent initramfs updates from trying to run grub and lilo.
 ## https://journal.paul.querna.org/articles/2013/10/15/docker-ubuntu-on-rackspace/
@@ -14,7 +16,8 @@ mkdir -p /etc/container_environment
 echo -n no > /etc/container_environment/INITRD
 
 ## Enable Ubuntu Universe and Multiverse.
-cp /build/sources.list /etc/apt/sources.list
+sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list
+sed -i 's/^#\s*\(deb.*multiverse\)$/\1/g' /etc/apt/sources.list
 apt-get update
 
 ## Fix some issues with APT packages.
@@ -30,10 +33,10 @@ dpkg-divert --local --rename --add /usr/bin/ischroot
 ln -sf /bin/true /usr/bin/ischroot
 
 ## Install HTTPS support for APT.
-$minimal_apt_get_install apt-transport-https
+$minimal_apt_get_install apt-transport-https ca-certificates
 
-## Bzip2
-$minimal_apt_get_install bzip2
+## Install add-apt-repository
+$minimal_apt_get_install software-properties-common
 
 ## Upgrade all packages.
 apt-get dist-upgrade -y --no-install-recommends
@@ -41,3 +44,6 @@ apt-get dist-upgrade -y --no-install-recommends
 ## Fix locale.
 $minimal_apt_get_install language-pack-en
 locale-gen en_US
+update-locale LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
+echo -n en_US.UTF-8 > /etc/container_environment/LANG
+echo -n en_US.UTF-8 > /etc/container_environment/LC_CTYPE

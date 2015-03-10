@@ -1,3 +1,62 @@
+## 0.9.16 (release date: 2015-01-20)
+
+ * `docker exec` is now the default and recommended mechanism for running commands in the container. SSH is now disabled by default, but is still supported for those cases where "docker exec" is not appropriate. Closes GH-168.
+ * All syslog output is now forwarded to `docker logs`. Closes GH-123.
+ * The workaround for Docker bug 2267 (the inability to modify /etc/hosts) has been removed, because it has been fixed upstream. Closes GH-155.
+ * Logrotate now reloads syslog-ng properly. Closes GH-167.
+ * Fixed some locale issues. Closes GH-178. Thanks to David J. M. Karlsen.
+ * Fixed problems with cron. Closes GH-115.
+ * Contribution by Bryan Bishop.
+
+## 0.9.15 (release date: 2014-10-03)
+
+ * Fixed the setuid bit on /usr/bin/sudo. This problem was caused by Docker bug #6828.
+
+## 0.9.14 (release date: 2014-10-01)
+
+ * Installed all the latest Ubuntu security updates. This patches Shellshock, among other things.
+ * Some documentation updates by andreamtp.
+
+## 0.9.13 (release date: 2014-08-22)
+
+ * Fixed `my_init` not properly exiting with a non-zero exit status when Ctrl-C is pressed.
+ * The GID of the `docker_env` group has been changed from 1000 to 8377, in order to avoid GID conflicts with any groups that you might want to introduce inside the container.
+ * The syslog-ng socket is now deleted before starting the syslog-ng daemon, to avoid the daemon from failing to start due to garbage on the filesystem. Thanks to Kingdon Barrett. Closes GH-129.
+ * Typo fixes by Arkadi Shishlov.
+
+## 0.9.12 (release date: 2014-07-24)
+
+ * We now officially support `nsenter` as an alternative way to login to the container. With official support, we mean that we've provided extensive documentation on how to use `nsenter`, as well as related convenience tools. However, because `nsenter` has various issues, and for backward compatibility reasons, we still support SSH. Please refer to the README for details about `nsenter`, and what the pros and cons are compared to SSH.
+   * The `docker-bash` tool has been modified to use `nsenter` instead of SSH.
+   * What was previously the `docker-bash` tool, has now been renamed to `docker-ssh`. It now also works on a regular sh shell too, instead of bash specifically.
+ * Added a workaround for Docker's inability to modify /etc/hosts in the container ([Docker bug 2267](https://github.com/dotcloud/docker/issues/2267)). Please refer to the README for details.
+ * Fixed an issue with SSH X11 forwarding. Thanks to Anatoly Bubenkov. Closes GH-105.
+ * The init system now prints its own log messages to stderr. Thanks to mephi42. Closes GH-106.
+
+## 0.9.11 (release date: 2014-06-24)
+
+ * Introduced the `docker-bash` tool. This is a shortcut tool for logging into a container using SSH. Usage: `docker-bash <CONTAINER ID>`. See the README for details.
+ * Fixed various process waiting issues in `my_init`. Closes GH-27, GH-82 and GH-83. Thanks to André Luiz dos Santos and Paul Annesley.
+ * The `ca-certificates` package is now installed by default. This is because we include `apt-transport-https`, but Ubuntu 14.04 no longer installs `ca-certificates` by default anymore. Closes GH-73.
+ * Output print by Runit services are now redirected to the Docker logs instead of to proctitle. Thanks to Paul Annesley.
+ * Container environment variables are now made available to SSH root shells. If you login with SSH through a non-root account, then container environment variables are only made available if that user is a member of the `docker_env` group. Thanks to Bernard Potocki.
+ * `add-apt-repository` is now installed by default. Closes GH-74.
+ * Various minor fixes and contributions thanks to yebyen, John Eckhart, Christoffer Sawicki and Brant Fitzsimmons.
+
+## 0.9.10 (release date: 2014-05-12)
+
+ * Upgraded to Ubuntu 14.04 (Trusty). We will no longer release images based on 12.04.
+   Thanks to contributions by mpeterson, Paul Jimenez, Santiago M. Mola and Kingdon Barrett.
+ * Fixed a problem with my_init not correctly passing child processes' exit status. Fixes GH-45.
+ * When reading environment variables from /etc/container_environment, the trailing newline (if any) is ignored. This makes commands like this work, without unintentially adding a newline to the environment variable value:
+
+        echo my_value > /etc/container_environment/FOO
+
+   If you intended on adding a newline to the value, ensure you have *two* trailing newlines:
+
+        echo -e "my_value\n" > /etc/container_environment/FOO
+ * It was not possible to use `docker run -e` to override environment variables defined in /etc/container_environment. This has been fixed (GH-52). Thanks to Stuart Campbell for reporting this bug.
+
 ## 0.9.9 (release date: 2014-03-25)
 
  * Fixed a problem with rssh. (Slawomir Chodnicki)

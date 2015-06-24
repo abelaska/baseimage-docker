@@ -1,5 +1,5 @@
-NAME = loysoftware/baseimage
-REPO = docker.loysoft.com
+NAME = baseimage
+REPO = gcr.io/friendspme
 VERSION = 0.9.16
 
 .PHONY: all build test tag_latest release ssh
@@ -24,7 +24,7 @@ squash:
 
 release: test tag_latest
 	@if ! docker images $(NAME) | awk '{ print $$2 }' | grep -q -F $(VERSION); then echo "$(NAME) version $(VERSION) is not yet built. Please run 'make build'"; false; fi
-	docker push $(REPO)/$(NAME):latest
+	gcloud docker push $(REPO)/$(NAME):latest
 	@echo "*** Don't forget to create a tag. git tag rel-$(VERSION) && git push origin rel-$(VERSION)"
 
 ssh:

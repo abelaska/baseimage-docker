@@ -1,6 +1,6 @@
 NAME = baseimage
 REPO = gcr.io/friendspme
-VERSION = 0.9.16
+VERSION = 0.9.17
 
 .PHONY: all build test tag_latest release ssh
 
